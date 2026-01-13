@@ -12,6 +12,7 @@ export type PostMeta = {
   tags?: string[];
   draft?: boolean;
   readingTime: number;
+  isMDX: boolean;
 };
 
 function calculateReadingTime(content: string): number {
@@ -25,10 +26,13 @@ export function getAllPosts(includeDrafts = false): PostMeta[] {
     return [];
   }
 
-  const files = fs.readdirSync(blogDir).filter((file) => file.endsWith(".mdx"));
+  const files = fs
+    .readdirSync(blogDir)
+    .filter((file) => file.endsWith(".mdx") || file.endsWith(".md"));
   return files
     .map((file) => {
-      const slug = file.replace(/\.mdx$/, "");
+      const slug = file.replace(/\.(mdx|md)$/, "");
+      const isMDX = file.endsWith(".mdx");
       const fullPath = path.join(blogDir, file);
       const source = fs.readFileSync(fullPath, "utf8");
       const { data, content } = matter(source);
@@ -41,6 +45,7 @@ export function getAllPosts(includeDrafts = false): PostMeta[] {
         tags: data.tags as string[] | undefined,
         draft: data.draft as boolean | undefined,
         readingTime: calculateReadingTime(content),
+        isMDX,
       };
     })
     .filter((post) => includeDrafts || !post.draft)
@@ -51,7 +56,18 @@ export function getPostBySlug(slug: string): {
   content: string;
   meta: PostMeta;
 } {
-  const fullPath = path.join(blogDir, `${slug}.mdx`);
+  // Try .mdx first, then .md
+  let fullPath = path.join(blogDir, `${slug}.mdx`);
+  let isMDX = true;
+  if (!fs.existsSync(fullPath)) {
+    fullPath = path.join(blogDir, `${slug}.md`);
+    isMDX = false;
+  }
+
+  if (!fs.existsSync(fullPath)) {
+    throw new Error(`Post not found: ${slug}`);
+  }
+
   const source = fs.readFileSync(fullPath, "utf8");
   const { data, content } = matter(source);
 
@@ -65,6 +81,7 @@ export function getPostBySlug(slug: string): {
       tags: data.tags as string[] | undefined,
       draft: data.draft as boolean | undefined,
       readingTime: calculateReadingTime(content),
+      isMDX,
     },
   };
 }

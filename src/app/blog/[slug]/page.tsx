@@ -1,4 +1,7 @@
 import { MDXRemote } from "next-mdx-remote/rsc";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
+import rehypeHighlight from "rehype-highlight";
 import { getAllPosts, getPostBySlug } from "@/lib/posts";
 import type { Metadata } from "next";
 import rehypePrettyCode, { type Options } from "rehype-pretty-code";
@@ -68,7 +71,16 @@ export default async function BlogPostPage({ params }: Props) {
         )}
       </header>
       <div className="prose prose-invert prose-slate max-w-none animate-fade-in-up stagger-2">
-        <MDXRemote source={content} options={mdxOptions} />
+        {meta.isMDX ? (
+          <MDXRemote source={content} options={mdxOptions} />
+        ) : (
+          <ReactMarkdown
+            remarkPlugins={[remarkGfm]}
+            rehypePlugins={[rehypeHighlight]}
+          >
+            {content}
+          </ReactMarkdown>
+        )}
       </div>
     </article>
   );

@@ -34,8 +34,8 @@ Also update `.env.local` with your own values (see [Environment Variables](#envi
 ```
 fybreworks/
 ├── content/
-│   └── blog/              # Blog posts (MDX files)
-│       └── *.mdx
+│   └── blog/              # Blog posts (MDX or Markdown files)
+│       └── *.{md,mdx}
 ├── data/
 │   └── projects.ts        # Projects data
 ├── public/
@@ -79,11 +79,11 @@ fybreworks/
 npm run new:post my-post-slug "My Post Title"
 ```
 
-This creates `content/blog/my-post-slug.mdx` with frontmatter template.
+This creates `content/blog/my-post-slug.md` with frontmatter template.
 
 **Option 2: Create manually**
 
-Create a new `.mdx` file in `content/blog/`:
+Create a new `.md` or `.mdx` file in `content/blog/`:
 
 ````mdx
 ---
@@ -115,11 +115,11 @@ const example = "highlighted code";
 
 ### Edit a Post
 
-Edit the `.mdx` file directly in `content/blog/`.
+Edit the `.md` or `.mdx` file directly in `content/blog/`.
 
 ### Delete a Post
 
-Delete the `.mdx` file from `content/blog/`.
+Delete the `.md` or `.mdx` file from `content/blog/`.
 
 ---
 
@@ -136,13 +136,16 @@ export const projects: Project[] = [
     slug: "my-project",
     name: "My Project",
     description: "What this project does.",
-    github: "https://github.com/user/repo",      // optional
-    appStore: "https://apps.apple.com/app/...",  // optional
-    playStore: "https://play.google.com/...",    // optional
+    links: [                                      // optional
+      { name: "GitHub", url: "https://github.com/user/repo" },
+      { name: "App Store", url: "https://apps.apple.com/app/..." },
+      { name: "Website", url: "https://myproject.com" },
+    ],
     images: [                                     // optional
       { src: "/projects/screenshot1.png", alt: "Home screen" },
       { src: "/projects/screenshot2.png", alt: "Settings" },
     ],
+    tags: ["web", "react"],                      // optional
   },
   // ... other projects
 ];
@@ -150,15 +153,14 @@ export const projects: Project[] = [
 
 ### Project Fields
 
-| Field         | Required | Description                     |
-| ------------- | -------- | ------------------------------- |
-| `slug`        | Yes      | Unique identifier               |
-| `name`        | Yes      | Display name                    |
-| `description` | Yes      | Project description             |
-| `github`      | No       | GitHub repository URL           |
-| `appStore`    | No       | App Store URL                   |
-| `playStore`   | No       | Play Store URL                  |
-| `images`      | No       | Array of `{ src, alt }` objects |
+| Field         | Required | Description                                        |
+| ------------- | -------- | -------------------------------------------------- |
+| `slug`        | Yes      | Unique identifier                                  |
+| `name`        | Yes      | Display name                                       |
+| `description` | Yes      | Project description                                |
+| `links`       | No       | Array of `{ name, url }` objects for project links |
+| `images`      | No       | Array of `{ src, alt }` objects                    |
+| `tags`        | No       | Array of tag strings for filtering                 |
 
 ### Project Images
 

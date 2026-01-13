@@ -1,4 +1,6 @@
 @import "tailwindcss";
+@plugin "@tailwindcss/typography";
+@import "highlight.js/styles/github-dark-dimmed.css";
 
 body {
   background-color: theme("colors.slate.950");
