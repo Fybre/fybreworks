@@ -6,16 +6,26 @@ import { getAllPosts, getPostBySlug } from "@/lib/posts";
 import type { Metadata } from "next";
 import rehypePrettyCode, { type Options } from "rehype-pretty-code";
 import type { Pluggable } from "unified";
+import { CodeBlock } from "@/components/code-block";
 
 const prettyCodeOptions: Options = {
   theme: "github-dark-dimmed",
   keepBackground: true,
 };
 
+const mdxComponents = {
+  pre: (props: React.HTMLProps<HTMLPreElement>) => (
+    <CodeBlock>
+      <pre {...props} />
+    </CodeBlock>
+  ),
+};
+
 const mdxOptions = {
   mdxOptions: {
     rehypePlugins: [[rehypePrettyCode, prettyCodeOptions] as Pluggable],
   },
+  components: mdxComponents,
 };
 
 type Props = {
@@ -77,6 +87,13 @@ export default async function BlogPostPage({ params }: Props) {
           <ReactMarkdown
             remarkPlugins={[remarkGfm]}
             rehypePlugins={[rehypeHighlight]}
+            components={{
+              pre: (props) => (
+                <CodeBlock>
+                  <pre {...props} />
+                </CodeBlock>
+              ),
+            }}
           >
             {content}
           </ReactMarkdown>

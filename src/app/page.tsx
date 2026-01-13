@@ -37,15 +37,7 @@ export default function HomePage() {
             remembering.
           </p>
         </a>
-        <a
-          href="/uses"
-          className="card-hover group rounded-lg border border-slate-800 bg-slate-900/40 p-4 text-sm animate-fade-in-up stagger-3 hover:bg-slate-900/60 transition-colors"
-        >
-          <h2 className="mb-1 font-medium text-slate-100">Uses</h2>
-          <p className="text-slate-500 group-hover:text-slate-300 transition-colors">
-            Tools and gear I use to get things done.
-          </p>
-        </a>
+
         <a
           href="/gaming"
           className="card-hover group rounded-lg border border-slate-800 bg-slate-900/40 p-4 text-sm animate-fade-in-up stagger-3 hover:bg-slate-900/60 transition-colors"
@@ -53,6 +45,15 @@ export default function HomePage() {
           <h2 className="mb-1 font-medium text-slate-100">Gaming</h2>
           <p className="text-slate-500 group-hover:text-slate-300 transition-colors">
             My gaming setup, current games, and thoughts on the hobby.
+          </p>
+        </a>
+        <a
+          href="/links"
+          className="card-hover group rounded-lg border border-slate-800 bg-slate-900/40 p-4 text-sm animate-fade-in-up stagger-3 hover:bg-slate-900/60 transition-colors"
+        >
+          <h2 className="mb-1 font-medium text-slate-100">Links</h2>
+          <p className="text-slate-500 group-hover:text-slate-300 transition-colors">
+            A collection of links to interesting resources, tools, and projects.
           </p>
         </a>
       </div>

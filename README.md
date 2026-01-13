@@ -19,8 +19,8 @@ If you've forked or cloned this repo for your own site, replace/delete the follo
 | ------------------------- | ---------------------------------------- |
 | `content/blog/*.mdx`      | Delete all posts, add your own           |
 | `data/projects.ts`        | Replace with your own projects           |
+| `data/links.ts`           | Replace with your own links              |
 | `src/app/about/page.tsx`  | Update with your own bio                 |
-| `src/app/uses/page.tsx`   | Update with your own tools/setup         |
 | `src/app/gaming/page.tsx` | Update or delete if not needed           |
 | `src/app/layout.tsx`      | Update site name, tagline, and nav links |
 | `public/projects/*`       | Delete and add your own images           |
@@ -52,12 +52,15 @@ fybreworks/
 │   │   ├── blog/          # /blog and /blog/[slug] pages
 │   │   ├── feed.xml/      # RSS feed
 │   │   ├── gaming/        # /gaming page with Steam integration
+│   │   ├── links/         # /links page
 │   │   ├── projects/      # /projects page
-│   │   ├── uses/          # /uses page
 │   │   ├── globals.css    # Global styles
 │   │   ├── layout.tsx     # Root layout with nav/footer
-│   │   └── page.tsx       # Homepage
+│   │   ├── page.tsx       # Homepage
+│   │   └── sitemap.ts     # Sitemap.xml generation
 │   ├── components/
+│   │   ├── blog-search.tsx    # Blog search with filtering
+│   │   ├── code-block.tsx     # Code block with copy button
 │   │   ├── image-gallery.tsx  # Expandable image thumbnails
 │   │   ├── steam-games.tsx    # Steam games display component
 │   │   └── steam-status.tsx   # Steam status display component
@@ -120,6 +123,17 @@ Edit the `.md` or `.mdx` file directly in `content/blog/`.
 ### Delete a Post
 
 Delete the `.md` or `.mdx` file from `content/blog/`.
+
+### Code Blocks
+
+Code blocks in blog posts automatically include a copy button that appears on hover. Supports both `.md` and `.mdx` files with syntax highlighting using the GitHub Dark Dimmed theme.
+
+````mdx
+```typescript
+// Your code here - will have a copy button
+const example = "Hello World";
+```
+````
 
 ---
 
@@ -203,38 +217,57 @@ Remove the project object from the `projects` array.
 
 ---
 
-## Uses Page
+## Links Page
 
-The `/uses` page lists your tools and setup. Edit `src/app/uses/page.tsx`.
+The `/links` page displays commonly used links organized by category. Links are defined in `data/links.ts`.
 
-### Structure
+### Add a Link
+
+Edit `data/links.ts` and add to a category's `links` array:
 
 ```ts
-const uses: UsesCategory[] = [
-  {
-    title: "Category Name",
-    items: [
-      {
-        name: "Tool Name",
-        description: "What you use it for",
-        url: "https://example.com", // optional
-      },
-    ],
-  },
-];
+// data/links.ts
+{
+  name: "Link Name",
+  url: "https://example.com",
+  description: "What this link is for", // optional
+}
 ```
 
 ### Add a Category
 
-Add a new object to the `uses` array with `title` and `items`.
+Add a new object to the `linkCategories` array:
 
-### Add an Item
-
-Add an object to a category's `items` array.
+```ts
+{
+  title: "Category Name",
+  links: [
+    { name: "Example", url: "https://example.com" },
+  ],
+}
+```
 
 ### Remove
 
-Delete the category or item object.
+Delete the category or link object from `data/links.ts`.
+
+---
+
+## Blog Search
+
+The `/blog` page includes a real-time search feature that filters posts as you type.
+
+### Search Behavior
+
+- Searches across post titles, descriptions, and tags
+- Case-insensitive matching
+- Shows result count when searching
+- Click the X button to clear the search
+- All posts shown when search is empty
+
+### How It Works
+
+The search component (`src/components/blog-search.tsx`) is client-side and filters posts without page reloads. The filtered results display with the same styling as the full blog list.
 
 ---
 
@@ -304,17 +337,42 @@ Available at `/feed.xml`. Automatically includes all published blog posts.
 
 ---
 
+## Sitemap
+
+A sitemap is automatically generated at `/sitemap.xml` for SEO purposes.
+
+### What's Included
+
+The sitemap includes:
+- All static pages (home, about, projects, blog, gaming, links)
+- All published blog posts with their publication dates
+- Appropriate priorities and change frequencies for each page type
+
+### Configuration
+
+The sitemap uses the `SITE_URL` environment variable. Update it in `.env.local` to match your domain:
+
+```bash
+SITE_URL=https://yourdomain.com
+```
+
+The sitemap is automatically regenerated on each build with updated content.
+
+---
+
 ## Features
 
 - **Animations**: Fade-in effects on page load
-- **Syntax Highlighting**: Code blocks use GitHub Dark Dimmed theme
+- **Syntax Highlighting**: Code blocks use GitHub Dark Dimmed theme with copy button
+- **Blog Search**: Real-time search across titles, descriptions, and tags
 - **Reading Time**: Auto-calculated for blog posts
 - **Tags**: Display on blog posts with pill styling
 - **Draft Mode**: Posts with `draft: true` are hidden in production
 - **OG Images**: Auto-generated for homepage and blog posts
 - **View Transitions**: Smooth page transitions (experimental)
-- **Image Gallery**: Expandable thumbnails for project screenshots
+- **Image Gallery**: Expandable thumbnails for project screenshots with keyboard navigation
 - **Steam Integration**: Live "now playing" status on gaming page
+- **SEO**: Auto-generated sitemap.xml and RSS feed
 
 ---
 

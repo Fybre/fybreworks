@@ -60,11 +60,11 @@ export default function RootLayout({
               <a href="/blog" className="hover:text-white transition-colors">
                 Blog
               </a>
-              <a href="/uses" className="hover:text-white transition-colors">
-                Uses
-              </a>
               <a href="/gaming" className="hover:text-white transition-colors">
                 Gaming
+              </a>
+              <a href="/links" className="hover:text-white transition-colors">
+                Links
               </a>
             </nav>
           </header>
