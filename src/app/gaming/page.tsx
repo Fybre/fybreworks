@@ -27,16 +27,8 @@ export default function GamingPage() {
         </p>
       </header>
 
-      {/* Steam Status - Currently Playing */}
-      <div className="animate-fade-in-up stagger-2">
-        <h2 className="mb-3 text-sm font-semibold uppercase tracking-wider text-slate-400">
-          Currently
-        </h2>
-        <SteamStatus />
-      </div>
-
       {/* Platforms */}
-      <div className="animate-fade-in-up stagger-3">
+      <div className="animate-fade-in-up stagger-2">
         <h2 className="mb-3 text-sm font-semibold uppercase tracking-wider text-slate-400">
           Platforms
         </h2>
@@ -88,6 +80,22 @@ export default function GamingPage() {
               </div>
             </div>
           </div>
+        </div>
+      </div>
+
+      {/* Steam Status - Currently Playing */}
+      <div className="animate-fade-in-up stagger-3">
+        <h2 className="mb-3 text-sm font-semibold uppercase tracking-wider text-slate-400">
+          Steam Details
+        </h2>
+        <p className="text-slate-300 mb-4">
+          The following details are retrieved dynamically from my Steam profile.
+        </p>
+        <div className="mb-4">
+          <h2 className="mb-3 text-sm font-semibold uppercase tracking-wider text-slate-400">
+            Currently Playing
+          </h2>
+          <SteamStatus />
         </div>
       </div>
 

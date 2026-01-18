@@ -125,20 +125,6 @@ export default function ProjectsPage() {
                 <p className="mt-1 text-sm text-slate-400">
                   {project.description}
                 </p>
-
-                {/* Project Tags */}
-                {project.tags && project.tags.length > 0 && (
-                  <div className="mt-2 flex flex-wrap gap-1">
-                    {project.tags.map((tag) => (
-                      <span
-                        key={tag}
-                        className="rounded-full bg-slate-800 px-2 py-0.5 text-xs text-slate-300"
-                      >
-                        {tag}
-                      </span>
-                    ))}
-                  </div>
-                )}
               </div>
 
               {/* Links */}
@@ -160,6 +146,20 @@ export default function ProjectsPage() {
 
             {project.images && project.images.length > 0 && (
               <ImageGallery images={project.images} />
+            )}
+
+            {/* Project Tags */}
+            {project.tags && project.tags.length > 0 && (
+              <div className="mt-3 flex flex-wrap gap-1">
+                {project.tags.map((tag) => (
+                  <span
+                    key={tag}
+                    className="rounded-full bg-slate-800 px-2 py-0.5 text-xs text-slate-300"
+                  >
+                    {tag}
+                  </span>
+                ))}
+              </div>
             )}
           </article>
         ))}

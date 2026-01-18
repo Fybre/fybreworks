@@ -70,7 +70,7 @@ function CollapsibleGameList({ games }: { games: Game[] }) {
   const [search, setSearch] = useState("");
 
   const filteredGames = games.filter((g) =>
-    g.name.toLowerCase().includes(search.toLowerCase())
+    g.name.toLowerCase().includes(search.toLowerCase()),
   );
 
   return (
@@ -173,6 +173,11 @@ export function SteamGames({ displayLimit = 6 }: { displayLimit?: number }) {
   return (
     <div className="space-y-6">
       {/* Stats Overview */}
+
+      <h3 className="mb-2 text-sm font-semibold uppercase tracking-wider text-slate-400">
+        Stats Overview
+      </h3>
+
       <div className="grid grid-cols-2 gap-3">
         <div className="rounded-lg border border-slate-800 bg-slate-900/40 p-4 text-center">
           <p className="text-2xl font-semibold text-slate-100">
