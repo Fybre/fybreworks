@@ -48,7 +48,7 @@ export const projects: Project[] = [
     description:
       "A React Native mobile application for managing and launching multiple electronic forms with session persistence and submission tracking.",
     links: [{ name: "GitHub", url: "https://github.com/Fybre/eform-launcher" }],
-    tags: ["mobile", "react-native", "ios", "android", "forms"],
+    tags: ["therefore", "mobile", "react-native", "ios", "android", "forms"],
   },
   {
     slug: "lnksnp",
@@ -57,18 +57,32 @@ export const projects: Project[] = [
     links: [
       { name: "GitHub", url: "https://github.com/Fybre/lnksnp" },
       { name: "Web", url: "https://lnksnp.com" },
+      {
+        name: "Docker Hub",
+        url: "https://hub.docker.com/repository/docker/fybre/lnksnp",
+      },
     ],
-    tags: ["web", "url-shortener", "javascript"],
+    tags: ["web", "url-shortener", "javascript", "docker"],
   },
   {
     slug: "jwtcreator",
     name: "JWT Creator",
     description:
-      "A simple JWT token creator and decoder - specifically for Therefore.",
+      "A JWT token creator and decoder - specifically for Therefore.",
     links: [
       { name: "GitHub", url: "https://github.com/Fybre/jwt-creator" },
       { name: "Web", url: "https://jwt.fybre.me" },
     ],
-    tags: ["web", "jwt", "javascript"],
+    tags: ["therefore", "web", "jwt", "javascript", "docker"],
+  },
+  {
+    slug: "csvserver",
+    name: "CSV Server",
+    description: "A simple CSV server for serving CSV files.",
+    links: [
+      { name: "GitHub", url: "https://github.com/Fybre/csvserver" },
+      { name: "Web", url: "https://csvserver.fybre.me" },
+    ],
+    tags: ["therefore", "web", "csv", "javascript"],
   },
 ];

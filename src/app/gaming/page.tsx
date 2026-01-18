@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 export default function GamingPage() {
   const displayLimit = Math.min(
     parseInt(process.env.STEAM_DISPLAY_LIMIT || "6"),
-    50
+    50,
   ); // Default 6, max 50
 
   return (
@@ -43,15 +43,50 @@ export default function GamingPage() {
         <div className="grid gap-3 md:grid-cols-2">
           <div className="card-hover rounded-lg border border-slate-800 bg-slate-900/40 p-4">
             <h3 className="text-sm font-medium text-slate-100">Gaming PC</h3>
-            <p className="mt-1 text-sm text-slate-400">
-              Main rig for modern titles and more demanding games.
-            </p>
+            <div className="mt-2 space-y-1 text-xs text-slate-400">
+              <div>
+                <strong>CPU:</strong> AMD Ryzen 5 5600X (6C/12T, 4.65GHz)
+              </div>
+              <div>
+                <strong>GPU:</strong> RTX 4070 SUPER
+              </div>
+              <div>
+                <strong>RAM:</strong> 32GB DDR4
+              </div>
+              <div>
+                <strong>Storage:</strong> 465GB NVMe + 477GB SSD + 1.82TB SSD +
+                3.64TB HDD
+              </div>
+              <div>
+                <strong>OS:</strong> Windows 11 Pro
+              </div>
+            </div>
           </div>
           <div className="card-hover rounded-lg border border-slate-800 bg-slate-900/40 p-4">
             <h3 className="text-sm font-medium text-slate-100">Legion Go</h3>
-            <p className="mt-1 text-sm text-slate-400">
-              Handheld for gaming on the go and retro emulation.
-            </p>
+            <div className="mt-2 space-y-1 text-xs text-slate-400">
+              <div>
+                <strong>CPU:</strong> AMD Ryzen Z1 Extreme (8C/16T, 5.1GHz)
+              </div>
+              <div>
+                <strong>GPU:</strong> AMD RDNA 3 iGPU (Radeon RX 7600M XT)
+              </div>
+              <div>
+                <strong>RAM:</strong> 16GB LPDDR5
+              </div>
+              <div>
+                <strong>Storage:</strong> 1TB SSD
+              </div>
+              <div>
+                <strong>Display:</strong> 8.8" 1600x2560 IPS LCD, 144Hz
+              </div>
+              <div>
+                <strong>Battery:</strong> 49.2Wh
+              </div>
+              <div>
+                <strong>OS:</strong> SteamOS
+              </div>
+            </div>
           </div>
         </div>
       </div>

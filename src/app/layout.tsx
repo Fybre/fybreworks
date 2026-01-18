@@ -37,9 +37,12 @@ export default function RootLayout({
         <div className="mx-auto flex min-h-screen max-w-4xl flex-col px-4 py-8">
           <header className="mb-8 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
             <div className="flex flex-col">
-              <span className="text-xs font-semibold tracking-[0.25em] text-slate-400 uppercase">
+              <a
+                href="/"
+                className="text-xs font-semibold tracking-[0.25em] text-slate-400 hover:text-slate-300 uppercase transition-colors"
+              >
                 Fybre
-              </span>
+              </a>
               <span className="text-sm text-slate-400">
                 Notes, projects, and experiments.
               </span>

@@ -106,7 +106,7 @@ const example = "highlighted code";
 ```
 ````
 
-````
+`````
 
 ### Frontmatter Fields
 
@@ -135,7 +135,7 @@ Code blocks in blog posts automatically include a copy button that appears on ho
 // Your code here - will have a copy button
 const example = "Hello World";
 ```
-````
+`````
 
 ---
 
@@ -152,20 +152,22 @@ export const projects: Project[] = [
     slug: "my-project",
     name: "My Project",
     description: "What this project does.",
-    links: [                                      // optional
+    links: [
+      // optional
       { name: "GitHub", url: "https://github.com/user/repo" },
       { name: "App Store", url: "https://apps.apple.com/app/..." },
       { name: "Website", url: "https://myproject.com" },
     ],
-    images: [                                     // optional
+    images: [
+      // optional
       { src: "/projects/screenshot1.png", alt: "Home screen" },
       { src: "/projects/screenshot2.png", alt: "Settings" },
     ],
-    tags: ["web", "react"],                      // optional
+    tags: ["web", "react"], // optional
   },
   // ... other projects
 ];
-````
+```
 
 ### Project Fields
 
@@ -219,7 +221,7 @@ Remove the project object from the `projects` array.
 
 ### GitHub Repositories
 
-The projects page also displays your public GitHub repositories in a collapsible section below your manual projects. Repositories are sorted by most recently updated.
+The projects page also displays your public GitHub repositories in a section below your manual projects. Repositories are sorted by most recently updated and include name, description, primary language, and star count.
 
 To enable this feature, add these environment variables:
 
@@ -235,6 +237,30 @@ GITHUB_TOKEN=your_github_token  # Optional, but recommended for higher rate limi
 3. Copy the token to your `.env.local`
 
 Without a token, you're limited to 60 API requests per hour. With a token, this increases to 5,000 requests per hour.
+
+### Contact Links
+
+The about page can display configurable contact links for Discord and email. Links only appear if their corresponding environment variables are set.
+
+**Email Link:**
+
+- Displays as a mailto link with email obfuscation to prevent harvesting
+- Email address is assembled dynamically in the browser using JavaScript
+- Invisible to bots that don't execute client-side JavaScript
+
+**Discord Link:**
+
+- Links to your Discord user profile
+- Displays your Discord username
+
+Configure contact links with these environment variables:
+
+```bash
+NEXT_PUBLIC_CONTACT_EMAIL=your.email@example.com
+NEXT_PUBLIC_DISCORD_USERNAME=your_discord_username
+```
+
+Both links are styled consistently with icons and hover effects. Remove the variables to hide the corresponding contact methods.
 
 ---
 
@@ -365,6 +391,7 @@ A sitemap is automatically generated at `/sitemap.xml` for SEO purposes.
 ### What's Included
 
 The sitemap includes:
+
 - All static pages (home, about, projects, blog, gaming, links)
 - All published blog posts with their publication dates
 - Appropriate priorities and change frequencies for each page type
@@ -424,16 +451,22 @@ STEAM_DISPLAY_LIMIT=6
 # GitHub integration (optional - for projects page)
 GITHUB_USERNAME=your_github_username
 GITHUB_TOKEN=your_github_token
+
+# Contact links (optional - for about page)
+NEXT_PUBLIC_CONTACT_EMAIL=your.email@example.com
+NEXT_PUBLIC_DISCORD_USERNAME=your_discord_username
 ```
 
-| Variable              | Default            | Description                                                                         |
-| --------------------- | ------------------ | ----------------------------------------------------------------------------------- |
-| `SITE_URL`            | `https://fybre.me` | Used for RSS feed and OG images                                                     |
-| `STEAM_API_KEY`       | –                  | Steam Web API key for gaming page                                                   |
-| `STEAM_ID`            | –                  | Your Steam numeric ID (64-bit)                                                      |
-| `STEAM_DISPLAY_LIMIT` | `6`                | Number of games to display in "Recently Played" and "Most Played" sections (max 50) |
-| `GITHUB_USERNAME`     | –                  | Your GitHub username for projects page                                              |
-| `GITHUB_TOKEN`        | –                  | GitHub personal access token (optional, increases rate limit)                       |
+| Variable                       | Default            | Description                                                                         |
+| ------------------------------ | ------------------ | ----------------------------------------------------------------------------------- |
+| `SITE_URL`                     | `https://fybre.me` | Used for RSS feed and OG images                                                     |
+| `STEAM_API_KEY`                | –                  | Steam Web API key for gaming page                                                   |
+| `STEAM_ID`                     | –                  | Your Steam numeric ID (64-bit)                                                      |
+| `STEAM_DISPLAY_LIMIT`          | `6`                | Number of games to display in "Recently Played" and "Most Played" sections (max 50) |
+| `GITHUB_USERNAME`              | –                  | Your GitHub username for projects page                                              |
+| `GITHUB_TOKEN`                 | –                  | GitHub personal access token (optional, increases rate limit)                       |
+| `NEXT_PUBLIC_CONTACT_EMAIL`    | –                  | Email address for contact link on about page (with obfuscation)                     |
+| `NEXT_PUBLIC_DISCORD_USERNAME` | –                  | Discord username for contact link on about page                                     |
 
 > **Note:** `.env.local` is gitignored by default, so your keys won't be committed.
 

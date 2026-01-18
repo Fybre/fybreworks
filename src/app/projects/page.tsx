@@ -143,15 +143,15 @@ export default function ProjectsPage() {
 
               {/* Links */}
               {project.links && project.links.length > 0 && (
-                <div className="flex flex-col gap-1 text-xs text-slate-300">
+                <div className="flex flex-col gap-1 text-xs text-slate-300 items-end">
                   {project.links.map((link) => (
                     <a
                       key={link.url}
                       href={link.url}
-                      className="link-glow hover:text-white transition-colors"
+                      className="link-glow hover:text-white transition-colors text-right"
                       target="_blank"
                     >
-                      {link.name}
+                      {link.name} →
                     </a>
                   ))}
                 </div>
@@ -241,7 +241,7 @@ export default function ProjectsPage() {
                         target="_blank"
                         rel="noopener noreferrer"
                       >
-                        View on GitHub →
+                        GitHub →
                       </a>
                     </div>
                   </article>
