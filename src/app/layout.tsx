@@ -35,7 +35,7 @@ export default function RootLayout({
     <html lang="en" className="h-full bg-slate-950 text-slate-100">
       <body className="min-h-full antialiased">
         <div className="mx-auto flex min-h-screen max-w-4xl flex-col px-4 py-8">
-          <header className="mb-8 flex items-center justify-between">
+          <header className="mb-8 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
             <div className="flex flex-col">
               <span className="text-xs font-semibold tracking-[0.25em] text-slate-400 uppercase">
                 Fybre
@@ -44,7 +44,7 @@ export default function RootLayout({
                 Notes, projects, and experiments.
               </span>
             </div>
-            <nav className="flex gap-4 text-sm text-slate-300">
+            <nav className="flex flex-wrap gap-x-4 gap-y-2 text-sm text-slate-300">
               <a href="/" className="hover:text-white transition-colors">
                 Home
               </a>

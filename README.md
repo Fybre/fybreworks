@@ -46,6 +46,8 @@ fybreworks/
 │   ├── app/
 │   │   ├── about/         # /about page
 │   │   ├── api/
+│   │   │   ├── github/    # GitHub API routes
+│   │   │   │   └── repos/ # Public repositories API
 │   │   │   └── steam/     # Steam API routes
 │   │   │       ├── games/ # Game library API
 │   │   │       └── route.ts # Player status API
@@ -215,6 +217,25 @@ Modify the project object in `data/projects.ts`.
 
 Remove the project object from the `projects` array.
 
+### GitHub Repositories
+
+The projects page also displays your public GitHub repositories in a collapsible section below your manual projects. Repositories are sorted by most recently updated.
+
+To enable this feature, add these environment variables:
+
+```bash
+GITHUB_USERNAME=your_github_username
+GITHUB_TOKEN=your_github_token  # Optional, but recommended for higher rate limits
+```
+
+**Get a GitHub token (optional but recommended):**
+
+1. Go to https://github.com/settings/tokens
+2. Generate a new token (classic) with `public_repo` scope
+3. Copy the token to your `.env.local`
+
+Without a token, you're limited to 60 API requests per hour. With a token, this increases to 5,000 requests per hour.
+
 ---
 
 ## Links Page
@@ -372,6 +393,7 @@ The sitemap is automatically regenerated on each build with updated content.
 - **View Transitions**: Smooth page transitions (experimental)
 - **Image Gallery**: Expandable thumbnails for project screenshots with keyboard navigation
 - **Steam Integration**: Live "now playing" status on gaming page
+- **GitHub Integration**: Auto-fetched public repositories on projects page
 - **SEO**: Auto-generated sitemap.xml and RSS feed
 
 ---
@@ -398,6 +420,10 @@ SITE_URL=https://fybre.me
 STEAM_API_KEY=your_api_key_here
 STEAM_ID=your_steam_id_here
 STEAM_DISPLAY_LIMIT=6
+
+# GitHub integration (optional - for projects page)
+GITHUB_USERNAME=your_github_username
+GITHUB_TOKEN=your_github_token
 ```
 
 | Variable              | Default            | Description                                                                         |
@@ -406,6 +432,8 @@ STEAM_DISPLAY_LIMIT=6
 | `STEAM_API_KEY`       | –                  | Steam Web API key for gaming page                                                   |
 | `STEAM_ID`            | –                  | Your Steam numeric ID (64-bit)                                                      |
 | `STEAM_DISPLAY_LIMIT` | `6`                | Number of games to display in "Recently Played" and "Most Played" sections (max 50) |
+| `GITHUB_USERNAME`     | –                  | Your GitHub username for projects page                                              |
+| `GITHUB_TOKEN`        | –                  | GitHub personal access token (optional, increases rate limit)                       |
 
 > **Note:** `.env.local` is gitignored by default, so your keys won't be committed.
 

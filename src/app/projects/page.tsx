@@ -1,11 +1,23 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { projects } from "@/../data/projects";
 import { ImageGallery } from "@/components/image-gallery";
 
+interface Repo {
+  name: string;
+  description: string | null;
+  language: string | null;
+  html_url: string;
+  updated_at: string;
+  stargazers_count: number;
+  fork: boolean;
+}
+
 export default function ProjectsPage() {
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
+  const [repos, setRepos] = useState<Repo[]>([]);
+  const [reposExpanded, setReposExpanded] = useState(false);
 
   // Get all unique tags from projects
   const allTags = useMemo(() => {
@@ -20,7 +32,7 @@ export default function ProjectsPage() {
   const filteredProjects = useMemo(() => {
     if (selectedTags.length === 0) return projects;
     return projects.filter((project) =>
-      project.tags?.some((tag) => selectedTags.includes(tag))
+      project.tags?.some((tag) => selectedTags.includes(tag)),
     );
   }, [selectedTags]);
 
@@ -41,6 +53,22 @@ export default function ProjectsPage() {
       });
     }
   };
+
+  useEffect(() => {
+    const fetchRepos = async () => {
+      try {
+        const response = await fetch("/api/github/repos");
+        const data = await response.json();
+        if (data.configured && data.repos) {
+          setRepos(data.repos);
+        }
+      } catch (error) {
+        console.error("Failed to fetch repos:", error);
+      }
+    };
+
+    fetchRepos();
+  }, []);
 
   return (
     <section className="space-y-4">
@@ -86,7 +114,7 @@ export default function ProjectsPage() {
             key={project.slug}
             className={`card-hover rounded-lg border border-slate-800 bg-slate-900/40 p-4 animate-fade-in-up stagger-${Math.min(
               index + 1,
-              4
+              4,
             )}`}
           >
             <div className="flex items-start justify-between gap-4">
@@ -150,6 +178,78 @@ export default function ProjectsPage() {
           </div>
         )}
       </div>
+
+      {/* GitHub Repositories */}
+      {repos.length > 0 && (
+        <div className="mt-8 space-y-3">
+          <button
+            onClick={() => setReposExpanded(!reposExpanded)}
+            className="flex items-center gap-2 text-xl font-semibold tracking-tight gradient-text animate-fade-in-up hover:opacity-80 transition-opacity"
+          >
+            <span
+              className={`transition-transform duration-200 ${reposExpanded ? "rotate-90" : ""}`}
+              style={{ WebkitTextFillColor: "#cbd5e1" }}
+            >
+              ▶
+            </span>
+            Github Public Repositories ({repos.length})
+          </button>
+          {reposExpanded && (
+            <>
+              <p className="text-slate-300 animate-fade-in-up stagger-1">
+                All my public repositories on GitHub.
+              </p>
+              {repos
+                .sort(
+                  (a, b) =>
+                    new Date(b.updated_at).getTime() -
+                    new Date(a.updated_at).getTime(),
+                )
+                .map((repo, index) => (
+                  <article
+                    key={repo.name}
+                    className={`card-hover rounded-lg border border-slate-800 bg-slate-900/40 p-4 animate-fade-in-up stagger-${Math.min(
+                      index + 1,
+                      4,
+                    )}`}
+                  >
+                    <div className="flex items-start justify-between gap-4">
+                      <div className="flex-1">
+                        <h3 className="text-sm font-semibold text-slate-100">
+                          {repo.name}
+                          {repo.fork && (
+                            <span className="ml-2 text-xs text-slate-400">
+                              (fork)
+                            </span>
+                          )}
+                        </h3>
+                        <p className="mt-1 text-sm text-slate-400">
+                          {repo.description || "No description available"}
+                        </p>
+                        <div className="mt-2 flex items-center gap-2 text-xs text-slate-300">
+                          {repo.language && (
+                            <span className="rounded-full bg-slate-800 px-2 py-0.5">
+                              {repo.language}
+                            </span>
+                          )}
+                          <span>⭐ {repo.stargazers_count}</span>
+                        </div>
+                      </div>
+                      <a
+                        href={repo.html_url}
+                        className="link-glow text-xs text-slate-300 hover:text-white transition-colors"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        View on GitHub →
+                      </a>
+                    </div>
+                  </article>
+                ))}
+            </>
+          )}
+        </div>
+      )}
     </section>
   );
 }
