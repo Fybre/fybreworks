@@ -23,7 +23,10 @@ export const projects: Project[] = [
     name: "CodeSnap",
     description: "A barcode scanner app built with Expo.",
     links: [
-      { name: "GitHub", url: "https://github.com/fybre/codesnap" },
+      {
+        name: "GitHub",
+        url: "https://github.com/Fybre/codesnap-barcode-scanner",
+      },
       { name: "App Store", url: "https://apps.apple.com/app/6757689692" },
     ],
     tags: ["mobile", "react-native", "ios", "android", "expo"],
@@ -44,16 +47,28 @@ export const projects: Project[] = [
     name: "EForm Launcher",
     description:
       "A React Native mobile application for managing and launching multiple electronic forms with session persistence and submission tracking.",
-    links: [
-      { name: "GitHub", url: "https://github.com/Fybre/eform-launcher" },
-    ],
+    links: [{ name: "GitHub", url: "https://github.com/Fybre/eform-launcher" }],
     tags: ["mobile", "react-native", "ios", "android", "forms"],
   },
   {
     slug: "lnksnp",
     name: "Lnksnp",
     description: "No frills link/URL shortener.",
-    links: [{ name: "GitHub", url: "https://github.com/Fybre/lnksnp" }],
+    links: [
+      { name: "GitHub", url: "https://github.com/Fybre/lnksnp" },
+      { name: "Web", url: "https://lnksnp.com" },
+    ],
     tags: ["web", "url-shortener", "javascript"],
+  },
+  {
+    slug: "jwtcreator",
+    name: "JWT Creator",
+    description:
+      "A simple JWT token creator and decoder - specifically for Therefore.",
+    links: [
+      { name: "GitHub", url: "https://github.com/Fybre/jwt-creator" },
+      { name: "Web", url: "https://jwt.fybre.me" },
+    ],
+    tags: ["web", "jwt", "javascript"],
   },
 ];
