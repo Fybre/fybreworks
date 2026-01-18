@@ -24,8 +24,7 @@ export const projects: Project[] = [
     description: "A barcode scanner app built with Expo.",
     links: [
       { name: "GitHub", url: "https://github.com/fybre/codesnap" },
-      { name: "App Store", url: "https://apps.apple.com/app/your-app-id" },
-      { name: "Play Store", url: "https://play.google.com/..." },
+      { name: "App Store", url: "https://apps.apple.com/app/6757689692" },
     ],
     tags: ["mobile", "react-native", "ios", "android", "expo"],
     images: [
@@ -47,7 +46,6 @@ export const projects: Project[] = [
       "A React Native mobile application for managing and launching multiple electronic forms with session persistence and submission tracking.",
     links: [
       { name: "GitHub", url: "https://github.com/Fybre/eform-launcher" },
-      { name: "App Store", url: "https://apps.apple.com/app/your-app-id" },
     ],
     tags: ["mobile", "react-native", "ios", "android", "forms"],
   },
