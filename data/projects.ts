@@ -84,6 +84,16 @@ export const projects: Project[] = [
     ],
     tags: ["therefore", "web", "jwt", "javascript", "api"],
   },
+    {
+    slug: "theconfiguration-processor",
+    name: "TheConfiguration Processor",
+    description: "A tool for processing Therefore configuration files and generating HTML documentation from them.",
+    links: [
+      { name: "GitHub", url: "https://github.com/Fybre/theconfiguration-processor" },
+      { name: "Website", url: "https://theconfig.fybre.me/" },
+    ],
+    tags: ["therefore", "documentation", "docker", "python"],
+  },
   {
     slug: "qrcoder",
     name: "QR Coder",
