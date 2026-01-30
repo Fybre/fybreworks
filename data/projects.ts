@@ -43,6 +43,14 @@ export const projects: Project[] = [
     ],
   },
   {
+    slug: "workout-notes",
+    name: "Workout Notes",
+    description:
+      "A mobile application for tracking workouts and notes. Track your workouts with ease. Log sets, monitor personal bests, all offline. Workout Notes is a simple, fast, and privacy-focused workout tracker designed for people who want to log their exercises without the complexity of predefined plans or subscriptions.",
+    links: [{ name: "GitHub", url: "https://github.com/Fybre/workout-notes" }],
+    tags: ["mobile", "react-native", "ios", "android", "expo", "fitness"],
+  },
+  {
     slug: "eformlauncher",
     name: "EForm Launcher",
     description:
@@ -71,9 +79,20 @@ export const projects: Project[] = [
       "A JWT token creator and decoder - specifically for Therefore.",
     links: [
       { name: "GitHub", url: "https://github.com/Fybre/jwt-creator" },
+      { name: "GitHub Pages", url: "https://fybre.github.io/jwt-creator/" },
       { name: "Web", url: "https://jwt.fybre.me" },
     ],
-    tags: ["therefore", "web", "jwt", "javascript", "docker"],
+    tags: ["therefore", "web", "jwt", "javascript", "api"],
+  },
+  {
+    slug: "qrcoder",
+    name: "QR Coder",
+    description: "A QR code generator.",
+    links: [
+      { name: "GitHub", url: "https://github.com/Fybre/qrcoder" },
+      { name: "GitHub Pages", url: "https://fybre.github.io/qrcoder/" },
+    ],
+    tags: ["qr", "barcode", "web", "javascript"],
   },
   {
     slug: "csvserver",

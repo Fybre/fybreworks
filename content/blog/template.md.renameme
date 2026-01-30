@@ -1,0 +1,27 @@
+---
+title: "put title here
+date: "2026-01-13"
+description: "description of the post"
+tags: ["AI", "development", "expo", "mobile"]
+---
+
+> this is a test
+>
+> quoted
+
+- bullet list 1
+- bullet list 2
+
+# Big heading
+
+## Medium Heading
+
+### Small Heading
+
+```json
+code block
+Line 1
+Line 2
+```
+
+<http://website.com>
