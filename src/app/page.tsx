@@ -28,7 +28,9 @@ export default function HomePage() {
           </p>
         </a>
         <a
-          href="/blog"
+          href="https://blog.fybre.me"
+          target="_blank"
+          rel="noopener noreferrer"
           className="card-hover group rounded-lg border border-slate-800 bg-slate-900/40 p-4 text-sm animate-fade-in-up stagger-3 hover:bg-slate-900/60 transition-colors"
         >
           <h2 className="mb-1 font-medium text-slate-100">Notes & Blog</h2>

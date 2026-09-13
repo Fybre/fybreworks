@@ -60,7 +60,12 @@ export default function RootLayout({
               >
                 Projects
               </a>
-              <a href="/blog" className="hover:text-white transition-colors">
+              <a
+                href="https://blog.fybre.me"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-white transition-colors"
+              >
                 Blog
               </a>
               <a href="/gaming" className="hover:text-white transition-colors">

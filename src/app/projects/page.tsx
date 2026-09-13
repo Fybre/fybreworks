@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useMemo, useEffect } from "react";
-import { projects } from "@/../data/projects";
+import type { Project } from "@/../data/projects";
 import { ImageGallery } from "@/components/image-gallery";
 
 interface Repo {
@@ -15,9 +15,24 @@ interface Repo {
 }
 
 export default function ProjectsPage() {
+  const [projects, setProjects] = useState<Project[]>([]);
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [repos, setRepos] = useState<Repo[]>([]);
   const [reposExpanded, setReposExpanded] = useState(false);
+
+  useEffect(() => {
+    const fetchProjects = async () => {
+      try {
+        const response = await fetch("/api/projects");
+        const data = await response.json();
+        setProjects(data.projects ?? []);
+      } catch (error) {
+        console.error("Failed to fetch projects:", error);
+      }
+    };
+
+    fetchProjects();
+  }, []);
 
   // Get all unique tags from projects
   const allTags = useMemo(() => {
@@ -26,7 +41,7 @@ export default function ProjectsPage() {
       project.tags?.forEach((tag) => tagSet.add(tag));
     });
     return Array.from(tagSet).sort();
-  }, []);
+  }, [projects]);
 
   // Filter projects based on selected tags
   const filteredProjects = useMemo(() => {
@@ -34,7 +49,7 @@ export default function ProjectsPage() {
     return projects.filter((project) =>
       project.tags?.some((tag) => selectedTags.includes(tag)),
     );
-  }, [selectedTags]);
+  }, [selectedTags, projects]);
 
   const handleTagClick = (tag: string | null) => {
     if (tag === null) {

@@ -1,12 +1,16 @@
 import type { Metadata } from "next";
-import { linkCategories } from "@/../data/links";
+import { getLinkCategories } from "@/lib/content-store";
 
 export const metadata: Metadata = {
   title: "Links",
   description: "Commonly used links and resources I frequently visit.",
 };
 
-export default function LinksPage() {
+export const dynamic = "force-dynamic";
+
+export default async function LinksPage() {
+  const linkCategories = await getLinkCategories();
+
   return (
     <section className="space-y-8">
       <header className="space-y-2">
