@@ -14,6 +14,20 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  async redirects() {
+    return [
+      {
+        source: "/blog",
+        destination: "https://blog.fybre.me",
+        permanent: false,
+      },
+      {
+        source: "/blog/:path*",
+        destination: "https://blog.fybre.me/:path*",
+        permanent: false,
+      },
+    ];
+  },
 };
 
 const withMDX = createMDX({
