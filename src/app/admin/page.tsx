@@ -57,14 +57,105 @@ function TextArea({
   );
 }
 
+// Keeps its own raw text while typing so a trailing "," or trailing space
+// isn't immediately stripped by re-deriving the text from the parsed array.
+function TagsInput({
+  label,
+  value,
+  onChange,
+}: {
+  label: string;
+  value: string[];
+  onChange: (v: string[]) => void;
+}) {
+  const [text, setText] = useState(() => value.join(", "));
+
+  return (
+    <label className="block text-xs text-slate-400">
+      {label}
+      <input
+        type="text"
+        value={text}
+        placeholder="e.g. mobile, react-native, ios"
+        onChange={(e) => {
+          setText(e.target.value);
+          onChange(
+            e.target.value
+              .split(",")
+              .map((t) => t.trim())
+              .filter(Boolean),
+          );
+        }}
+        onBlur={() => setText(value.join(", "))}
+        className="mt-1 w-full rounded border border-slate-800 bg-slate-950/60 px-2 py-1.5 text-sm text-slate-100 outline-none focus:border-slate-600"
+      />
+    </label>
+  );
+}
+
+function ReorderButtons({
+  onMoveUp,
+  onMoveDown,
+  disableUp,
+  disableDown,
+}: {
+  onMoveUp: () => void;
+  onMoveDown: () => void;
+  disableUp: boolean;
+  disableDown: boolean;
+}) {
+  return (
+    <div className="flex flex-col gap-0.5">
+      <button
+        type="button"
+        onClick={onMoveUp}
+        disabled={disableUp}
+        title="Move up"
+        className="rounded bg-slate-800 px-1.5 text-xs text-slate-300 hover:bg-slate-700 disabled:opacity-30"
+      >
+        ▲
+      </button>
+      <button
+        type="button"
+        onClick={onMoveDown}
+        disabled={disableDown}
+        title="Move down"
+        className="rounded bg-slate-800 px-1.5 text-xs text-slate-300 hover:bg-slate-700 disabled:opacity-30"
+      >
+        ▼
+      </button>
+    </div>
+  );
+}
+
+function moveItem<T>(items: T[], index: number, direction: -1 | 1): T[] {
+  const target = index + direction;
+  if (target < 0 || target >= items.length) return items;
+  const next = items.slice();
+  [next[index], next[target]] = [next[target], next[index]];
+  return next;
+}
+
+function nextKey(): string {
+  return crypto.randomUUID();
+}
+
 function ProjectEditor({
   project,
   onChange,
   onDelete,
+  onMoveUp,
+  onMoveDown,
+  disableUp,
+  disableDown,
 }: {
   project: Project;
   onChange: (p: Project) => void;
   onDelete: () => void;
+  onMoveUp: () => void;
+  onMoveDown: () => void;
+  disableUp: boolean;
+  disableDown: boolean;
 }) {
   const update = <K extends keyof Project>(key: K, value: Project[K]) =>
     onChange({ ...project, [key]: value });
@@ -79,6 +170,8 @@ function ProjectEditor({
     update("links", [...links, { name: "", url: "" }]);
   const removeLink = (i: number) =>
     update("links", links.filter((_, idx) => idx !== i));
+  const moveLink = (i: number, dir: -1 | 1) =>
+    update("links", moveItem(links, i, dir));
 
   const updateImage = (i: number, image: ProjectImage) =>
     update("images", images.map((img, idx) => (idx === i ? image : img)));
@@ -86,10 +179,18 @@ function ProjectEditor({
     update("images", [...images, { src: "", alt: "" }]);
   const removeImage = (i: number) =>
     update("images", images.filter((_, idx) => idx !== i));
+  const moveImage = (i: number, dir: -1 | 1) =>
+    update("images", moveItem(images, i, dir));
 
   return (
     <div className="space-y-3 rounded-lg border border-slate-800 bg-slate-900/40 p-4">
       <div className="flex items-start justify-between gap-4">
+        <ReorderButtons
+          onMoveUp={onMoveUp}
+          onMoveDown={onMoveDown}
+          disableUp={disableUp}
+          disableDown={disableDown}
+        />
         <div className="grid flex-1 grid-cols-2 gap-3">
           <TextInput
             label="Slug (unique id, used in URLs)"
@@ -116,18 +217,10 @@ function ProjectEditor({
         onChange={(v) => update("description", v)}
       />
 
-      <TextInput
+      <TagsInput
         label="Tags (comma separated)"
-        value={tags.join(", ")}
-        onChange={(v) =>
-          update(
-            "tags",
-            v
-              .split(",")
-              .map((t) => t.trim())
-              .filter(Boolean),
-          )
-        }
+        value={tags}
+        onChange={(v) => update("tags", v)}
       />
 
       <div className="space-y-2">
@@ -142,6 +235,12 @@ function ProjectEditor({
         </div>
         {links.map((link, i) => (
           <div key={i} className="flex items-end gap-2">
+            <ReorderButtons
+              onMoveUp={() => moveLink(i, -1)}
+              onMoveDown={() => moveLink(i, 1)}
+              disableUp={i === 0}
+              disableDown={i === links.length - 1}
+            />
             <div className="flex-1">
               <TextInput
                 label="Name"
@@ -178,6 +277,12 @@ function ProjectEditor({
         </div>
         {images.map((image, i) => (
           <div key={i} className="flex items-end gap-2">
+            <ReorderButtons
+              onMoveUp={() => moveImage(i, -1)}
+              onMoveDown={() => moveImage(i, 1)}
+              disableUp={i === 0}
+              disableDown={i === images.length - 1}
+            />
             <div className="flex-[2]">
               <TextInput
                 label="Image URL"
@@ -205,8 +310,10 @@ function ProjectEditor({
   );
 }
 
+type KeyedProject = Project & { _key: string };
+
 function ProjectsTab() {
-  const [projects, setProjects] = useState<Project[] | null>(null);
+  const [projects, setProjects] = useState<KeyedProject[] | null>(null);
   const [status, setStatus] = useState<"idle" | "saving" | "saved" | "error">(
     "idle",
   );
@@ -215,28 +322,37 @@ function ProjectsTab() {
   useEffect(() => {
     fetch("/api/admin/projects")
       .then((r) => r.json())
-      .then((d) => setProjects(d.projects));
+      .then((d) =>
+        setProjects(
+          (d.projects as Project[]).map((p) => ({ ...p, _key: nextKey() })),
+        ),
+      );
   }, []);
 
   if (!projects) return <p className="text-sm text-slate-500">Loading...</p>;
 
   const update = (i: number, p: Project) =>
-    setProjects(projects.map((old, idx) => (idx === i ? p : old)));
+    setProjects(
+      projects.map((old, idx) => (idx === i ? { ...p, _key: old._key } : old)),
+    );
   const remove = (i: number) =>
     setProjects(projects.filter((_, idx) => idx !== i));
   const add = () =>
     setProjects([
       ...projects,
-      { slug: "", name: "", description: "", tags: [], links: [] },
+      { slug: "", name: "", description: "", tags: [], links: [], _key: nextKey() },
     ]);
+  const move = (i: number, dir: -1 | 1) =>
+    setProjects(moveItem(projects, i, dir));
 
   const save = async () => {
     setStatus("saving");
     setErrorMsg("");
+    const payload = projects.map(({ _key, ...p }) => p);
     const res = await fetch("/api/admin/projects", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ projects }),
+      body: JSON.stringify({ projects: payload }),
     });
     if (res.ok) {
       setStatus("saved");
@@ -277,10 +393,14 @@ function ProjectsTab() {
       <div className="space-y-4">
         {projects.map((project, i) => (
           <ProjectEditor
-            key={i}
+            key={project._key}
             project={project}
             onChange={(p) => update(i, p)}
             onDelete={() => remove(i)}
+            onMoveUp={() => move(i, -1)}
+            onMoveDown={() => move(i, 1)}
+            disableUp={i === 0}
+            disableDown={i === projects.length - 1}
           />
         ))}
       </div>
@@ -292,10 +412,18 @@ function LinkCategoryEditor({
   category,
   onChange,
   onDelete,
+  onMoveUp,
+  onMoveDown,
+  disableUp,
+  disableDown,
 }: {
   category: LinkCategory;
   onChange: (c: LinkCategory) => void;
   onDelete: () => void;
+  onMoveUp: () => void;
+  onMoveDown: () => void;
+  disableUp: boolean;
+  disableDown: boolean;
 }) {
   const updateLink = (i: number, link: SiteLink) =>
     onChange({
@@ -312,10 +440,18 @@ function LinkCategoryEditor({
       ...category,
       links: category.links.filter((_, idx) => idx !== i),
     });
+  const moveLink = (i: number, dir: -1 | 1) =>
+    onChange({ ...category, links: moveItem(category.links, i, dir) });
 
   return (
     <div className="space-y-3 rounded-lg border border-slate-800 bg-slate-900/40 p-4">
       <div className="flex items-end justify-between gap-4">
+        <ReorderButtons
+          onMoveUp={onMoveUp}
+          onMoveDown={onMoveDown}
+          disableUp={disableUp}
+          disableDown={disableDown}
+        />
         <div className="flex-1">
           <TextInput
             label="Category title"
@@ -343,6 +479,12 @@ function LinkCategoryEditor({
         </div>
         {category.links.map((link, i) => (
           <div key={i} className="flex items-end gap-2">
+            <ReorderButtons
+              onMoveUp={() => moveLink(i, -1)}
+              onMoveDown={() => moveLink(i, 1)}
+              disableUp={i === 0}
+              disableDown={i === category.links.length - 1}
+            />
             <div className="flex-1">
               <TextInput
                 label="Name"
@@ -377,8 +519,12 @@ function LinkCategoryEditor({
   );
 }
 
+type KeyedLinkCategory = LinkCategory & { _key: string };
+
 function LinksTab() {
-  const [categories, setCategories] = useState<LinkCategory[] | null>(null);
+  const [categories, setCategories] = useState<KeyedLinkCategory[] | null>(
+    null,
+  );
   const [status, setStatus] = useState<"idle" | "saving" | "saved" | "error">(
     "idle",
   );
@@ -387,24 +533,37 @@ function LinksTab() {
   useEffect(() => {
     fetch("/api/admin/links")
       .then((r) => r.json())
-      .then((d) => setCategories(d.linkCategories));
+      .then((d) =>
+        setCategories(
+          (d.linkCategories as LinkCategory[]).map((c) => ({
+            ...c,
+            _key: nextKey(),
+          })),
+        ),
+      );
   }, []);
 
   if (!categories) return <p className="text-sm text-slate-500">Loading...</p>;
 
   const update = (i: number, c: LinkCategory) =>
-    setCategories(categories.map((old, idx) => (idx === i ? c : old)));
+    setCategories(
+      categories.map((old, idx) => (idx === i ? { ...c, _key: old._key } : old)),
+    );
   const remove = (i: number) =>
     setCategories(categories.filter((_, idx) => idx !== i));
-  const add = () => setCategories([...categories, { title: "", links: [] }]);
+  const add = () =>
+    setCategories([...categories, { title: "", links: [], _key: nextKey() }]);
+  const move = (i: number, dir: -1 | 1) =>
+    setCategories(moveItem(categories, i, dir));
 
   const save = async () => {
     setStatus("saving");
     setErrorMsg("");
+    const payload = categories.map(({ _key, ...c }) => c);
     const res = await fetch("/api/admin/links", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ linkCategories: categories }),
+      body: JSON.stringify({ linkCategories: payload }),
     });
     if (res.ok) {
       setStatus("saved");
@@ -445,10 +604,14 @@ function LinksTab() {
       <div className="space-y-4">
         {categories.map((category, i) => (
           <LinkCategoryEditor
-            key={i}
+            key={category._key}
             category={category}
             onChange={(c) => update(i, c)}
             onDelete={() => remove(i)}
+            onMoveUp={() => move(i, -1)}
+            onMoveDown={() => move(i, 1)}
+            disableUp={i === 0}
+            disableDown={i === categories.length - 1}
           />
         ))}
       </div>
