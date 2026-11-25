@@ -148,8 +148,8 @@ when the live site loads an existing admin-managed project list from Blob storag
 Existing projects and their order are preserved; an admin-managed entry with the
 same slug takes precedence, so there is no duplicate. To remove the repository
 fallback completely, remove it from `repositoryProjects`. Project entries can
-optionally specify an `icon` URL. The launcher currently has no hosted download
-or source repository link; add verified URLs to its `links` when available.
+optionally specify an `icon` URL. The launcher links to its public source repository
+and the latest Windows x64 and ARM64 single-file EXEs on GitHub Releases.
 
 ### Add a Project
 

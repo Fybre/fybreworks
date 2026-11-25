@@ -4,6 +4,8 @@ import { includeRepositoryProjects } from "../src/lib/project-list";
 
 const launcher = repositoryProjects.find((project) => project.slug === "therefore-launcher");
 assert.ok(launcher);
+assert.ok(launcher.links?.some((link) => link.url.endsWith("/ThereforeLauncher-win-x64.exe")));
+assert.ok(launcher.links?.some((link) => link.url.endsWith("/ThereforeLauncher-win-arm64.exe")));
 assert.equal(projects.filter((project) => project.slug === launcher.slug).length, 1);
 const saved: Project[] = [
   { slug: "custom-second", name: "Custom second", description: "Preserve this order" },
