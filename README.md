@@ -143,6 +143,14 @@ const example = "Hello World";
 
 Projects are defined in `data/projects.ts`.
 
+The Therefore Launcher entry is in `repositoryProjects`, which is also included
+when the live site loads an existing admin-managed project list from Blob storage.
+Existing projects and their order are preserved; an admin-managed entry with the
+same slug takes precedence, so there is no duplicate. To remove the repository
+fallback completely, remove it from `repositoryProjects`. Project entries can
+optionally specify an `icon` URL. The launcher currently has no hosted download
+or source repository link; add verified URLs to its `links` when available.
+
 ### Add a Project
 
 ```ts

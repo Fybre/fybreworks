@@ -1,5 +1,6 @@
 import { get, put } from "@vercel/blob";
 import { projects as defaultProjects, type Project } from "@/../data/projects";
+import { includeRepositoryProjects } from "./project-list";
 import {
   linkCategories as defaultLinkCategories,
   type LinkCategory,
@@ -26,7 +27,7 @@ async function writeJSON(pathname: string, data: unknown): Promise<void> {
 
 export async function getProjects(): Promise<Project[]> {
   const stored = await readJSON<Project[]>(PROJECTS_PATH);
-  return stored ?? defaultProjects;
+  return includeRepositoryProjects(stored ?? defaultProjects);
 }
 
 export async function saveProjects(projects: Project[]): Promise<void> {
