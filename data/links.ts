@@ -9,7 +9,61 @@ export type LinkCategory = {
   links: Link[];
 };
 
+export const repositoryLinkCategories: LinkCategory[] = [
+  {
+    title: "Project Links",
+    links: [
+      {
+        name: "CSV Server",
+        url: "https://csv-server.fybre.me/",
+        description: "Upload CSV files and serve their data through a simple REST API.",
+      },
+      {
+        name: "DocServices Admin",
+        url: "https://docservices.fybre.me/admin/",
+        description: "Admin portal for the DocServices toolkit, including document redaction and splitting.",
+      },
+      {
+        name: "eForm Versioner",
+        url: "https://eform-versioner.fybre.me/",
+        description: "Generate versions for Therefore eForms.",
+      },
+      {
+        name: "JWT Creator",
+        url: "https://jwt.fybre.me/",
+        description: "Generate custom JWTs for client-side authentication with Therefore.",
+      },
+      {
+        name: "Lnksnp",
+        url: "https://lnksnp.com/",
+        description: "Create short, shareable links from long URLs.",
+      },
+      {
+        name: "Therefore Online Usage",
+        url: "https://tfo-usage.fybre.me/",
+        description: "View tenant usage for Therefore Online.",
+      },
+      {
+        name: "Therefore Documentation Generator",
+        url: "https://therefore-doc-generator.fybre.me/",
+        description: "Create implementation documentation for Therefore tenants.",
+      },
+      {
+        name: "Therefore Log Auditor",
+        url: "https://log-auditor.fybre.me/",
+        description: "Audit Therefore monitoring event messages in real time.",
+      },
+      {
+        name: "Therefore Web Console",
+        url: "https://webconsole.fybre.me/",
+        description: "Access a web-based version of the Therefore Console.",
+      },
+    ],
+  },
+];
+
 export const linkCategories: LinkCategory[] = [
+  ...repositoryLinkCategories,
   {
     title: "Development",
     links: [

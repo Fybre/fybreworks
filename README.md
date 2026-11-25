@@ -276,6 +276,14 @@ Both links are styled consistently with icons and hover effects. Remove the vari
 
 The `/links` page displays commonly used links organized by category. Links are defined in `data/links.ts`.
 
+The **Project Links** section is defined in `repositoryLinkCategories`. It is
+included even when the site has an admin-managed links list in Blob storage.
+Existing categories, custom links and edited descriptions are preserved; missing
+project URLs are added without duplicates (including trailing-slash variants).
+To remove a repository-provided link permanently, remove its entry from
+`repositoryLinkCategories`. Run `npx tsx scripts/check-link-list.ts` to check the
+nine project URLs and the merge behavior.
+
 ### Add a Link
 
 Edit `data/links.ts` and add to a category's `links` array:

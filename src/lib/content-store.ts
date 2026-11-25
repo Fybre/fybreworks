@@ -1,6 +1,7 @@
 import { get, put } from "@vercel/blob";
 import { projects as defaultProjects, type Project } from "@/../data/projects";
 import { includeRepositoryProjects } from "./project-list";
+import { includeRepositoryLinks } from "./link-list";
 import {
   linkCategories as defaultLinkCategories,
   type LinkCategory,
@@ -36,7 +37,7 @@ export async function saveProjects(projects: Project[]): Promise<void> {
 
 export async function getLinkCategories(): Promise<LinkCategory[]> {
   const stored = await readJSON<LinkCategory[]>(LINKS_PATH);
-  return stored ?? defaultLinkCategories;
+  return includeRepositoryLinks(stored ?? defaultLinkCategories);
 }
 
 export async function saveLinkCategories(
