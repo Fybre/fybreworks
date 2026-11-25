@@ -3,6 +3,7 @@
 import { useState, useMemo, useEffect } from "react";
 import type { Project } from "@/../data/projects";
 import { ImageGallery } from "@/components/image-gallery";
+import Image from "next/image";
 
 interface Repo {
   name: string;
@@ -134,7 +135,10 @@ export default function ProjectsPage() {
           >
             <div className="flex items-start justify-between gap-4">
               <div className="flex-1">
-                <h2 className="text-sm font-semibold text-slate-100">
+                <h2 className="flex items-center gap-3 text-sm font-semibold text-slate-100">
+                  {project.icon && (
+                    <Image src={project.icon} alt="" width={32} height={32} className="shrink-0 rounded-lg" />
+                  )}
                   {project.name}
                 </h2>
                 <p className="mt-1 text-sm text-slate-400">

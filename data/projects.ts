@@ -11,13 +11,32 @@ export type ProjectLink = {
 export type Project = {
   slug: string;
   name: string;
+  icon?: string;
   description: string;
   links?: ProjectLink[];
   images?: ProjectImage[];
   tags?: string[];
 };
 
+// Repository-managed entries are included alongside the admin-managed list.
+export const repositoryProjects: Project[] = [
+  {
+    slug: "therefore-launcher",
+    name: "Therefore Launcher",
+    icon: "/projects/therefore-launcher.svg",
+    links: [
+      { name: "GitHub", url: "https://github.com/Fybre/therefore-launcher" },
+      { name: "Windows x64", url: "https://github.com/Fybre/therefore-launcher/releases/latest/download/ThereforeLauncher-win-x64.exe" },
+      { name: "Windows ARM64", url: "https://github.com/Fybre/therefore-launcher/releases/latest/download/ThereforeLauncher-win-arm64.exe" },
+    ],
+    description:
+      "A Windows desktop launcher for administrators working across multiple Therefore Online tenants. Save connection profiles, capture existing username/password or Entra ID settings, reorder tenants, and open Navigator, Designer and Console using the same connection. Available as a self-contained single-file app for Windows x64 and ARM64. Requires the Therefore client to be installed.",
+    tags: ["therefore", "windows", "desktop", "csharp", "dotnet", "administration"],
+  },
+];
+
 export const projects: Project[] = [
+  ...repositoryProjects,
   {
     slug: "codesnap",
     name: "CodeSnap",
