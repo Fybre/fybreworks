@@ -42,8 +42,8 @@ export const repositoryProjects: Project[] = [
       { name: "Windows x64", url: "https://github.com/Fybre/therefore-dialog-patcher/releases/latest/download/ThereforeDialogPatcherGUI.exe" },
     ],
     description:
-      "A standalone Windows utility that suppresses the license-change notification shown after switching Therefore tenants. Scan for a compatible dialog call, patch with a backup, save a patched copy, or restore the original. Supports x86 and x64 client DLLs, requires administrator access, and runs without installing Python. Verified with Therefore v34 x86 and v36 x64; other versions require a compatible match.",
-    tags: ["therefore", "windows", "desktop", "python", "administration"],
+      "A native C#/.NET Windows utility that suppresses the license-change notification shown after switching Therefore tenants. Scan for a compatible dialog call, patch with a backup, save a patched copy, or restore the original. Supports x86 and x64 client DLLs, requires administrator access, and runs without installing Python. Verified with Therefore v34 x86 and v36 x64; other versions require a compatible match.",
+    tags: ["therefore", "windows", "desktop", "csharp", "dotnet", "administration"],
   },
 ];
 
