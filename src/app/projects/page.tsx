@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo, useEffect } from "react";
+import { useState, useMemo, useEffect, useRef } from "react";
 import type { Project } from "@/../data/projects";
 import { ImageGallery } from "@/components/image-gallery";
 import Image from "next/image";
@@ -20,6 +20,50 @@ export default function ProjectsPage() {
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [repos, setRepos] = useState<Repo[]>([]);
   const [reposExpanded, setReposExpanded] = useState(false);
+  const [scrollTarget, setScrollTarget] = useState<{ slug: string } | null>(null);
+  const bottomSpace = useRef<HTMLDivElement>(null);
+
+  // Projects arrive asynchronously, so native fragment navigation alone is too early.
+  useEffect(() => {
+    const followFragment = () => {
+      let fragment: string;
+      try {
+        fragment = decodeURIComponent(window.location.hash.slice(1));
+      } catch {
+        setScrollTarget(null);
+        return;
+      }
+      const project = projects.find((item) => item.slug === fragment)
+        ?? projects.find((item) => item.name.toLowerCase() === fragment.toLowerCase());
+      setScrollTarget(project ? { slug: project.slug } : null);
+      if (project) setSelectedTags([]);
+    };
+    followFragment();
+    window.addEventListener("hashchange", followFragment);
+    return () => window.removeEventListener("hashchange", followFragment);
+  }, [projects]);
+
+  useEffect(() => {
+    if (!scrollTarget) return;
+    const scrollToProject = () => {
+      const element = document.getElementById(scrollTarget.slug);
+      const spacer = bottomSpace.current;
+      if (!element || !spacer) return;
+      // Supply only the space needed to align even the last card with the top.
+      spacer.style.height = "0px";
+      const desiredTop = element.getBoundingClientRect().top + window.scrollY - 16;
+      const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+      spacer.style.height = `${Math.max(0, Math.ceil(desiredTop - maxScroll))}px`;
+      element.scrollIntoView({ block: "start", behavior: "instant" });
+    };
+    const frame = requestAnimationFrame(scrollToProject);
+    window.addEventListener("resize", scrollToProject);
+    return () => {
+      cancelAnimationFrame(frame);
+      window.removeEventListener("resize", scrollToProject);
+      if (bottomSpace.current) bottomSpace.current.style.height = "0px";
+    };
+  }, [scrollTarget]);
 
   useEffect(() => {
     const fetchProjects = async () => {
@@ -53,6 +97,7 @@ export default function ProjectsPage() {
   }, [selectedTags, projects]);
 
   const handleTagClick = (tag: string | null) => {
+    setScrollTarget(null);
     if (tag === null) {
       // "All" button clicked - clear all filters
       setSelectedTags([]);
@@ -128,10 +173,11 @@ export default function ProjectsPage() {
         {filteredProjects.map((project, index) => (
           <article
             key={project.slug}
-            className={`card-hover rounded-lg border border-slate-800 bg-slate-900/40 p-4 animate-fade-in-up stagger-${Math.min(
+            id={project.slug}
+            className={`card-hover scroll-mt-4 rounded-lg border border-slate-800 bg-slate-900/40 p-4 ${scrollTarget ? "" : `animate-fade-in-up stagger-${Math.min(
               index + 1,
               4,
-            )}`}
+            )}`}`}
           >
             <div className="flex items-start justify-between gap-4">
               <div className="flex-1">
@@ -139,7 +185,18 @@ export default function ProjectsPage() {
                   {project.icon && (
                     <Image src={project.icon} alt="" width={32} height={32} className="shrink-0 rounded-lg" />
                   )}
-                  {project.name}
+                  <a
+                    href={`#${encodeURIComponent(project.slug)}`}
+                    className="hover:underline underline-offset-4"
+                    title={`Direct link to ${project.name}`}
+                    onClick={(event) => {
+                      if (event.button !== 0 || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return;
+                      setSelectedTags([]);
+                      setScrollTarget({ slug: project.slug });
+                    }}
+                  >
+                    {project.name}
+                  </a>
                 </h2>
                 <p className="mt-1 text-sm text-slate-400">
                   {project.description}
@@ -269,6 +326,7 @@ export default function ProjectsPage() {
           )}
         </div>
       )}
+      <div ref={bottomSpace} aria-hidden="true" />
     </section>
   );
 }
