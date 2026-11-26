@@ -30,7 +30,7 @@ export const repositoryProjects: Project[] = [
       { name: "Windows ARM64", url: "https://github.com/Fybre/therefore-launcher/releases/latest/download/ThereforeLauncher-win-arm64.exe" },
     ],
     description:
-      "A Windows desktop launcher for administrators working across multiple Therefore Online tenants. Save connection profiles, capture existing username/password or Entra ID settings, reorder tenants, and open Navigator, Designer and Console using the same connection. Available as a self-contained single-file app for Windows x64 and ARM64. Requires the Therefore client to be installed.",
+      "A Windows desktop launcher for administrators working across multiple Therefore Online tenants. Save connection profiles, capture existing username/password or Entra ID settings, reorder tenants, and open Navigator, Designer and Console using the same connection. Available as a self-contained single-file app for Windows x64 and ARM64. Requires the Therefore client to be installed. If Windows SmartScreen blocks your trusted download, right-click the launcher EXE, choose Properties, tick Unblock on the General tab if shown, then click Apply and OK. A new download or update may need unblocking again.",
     tags: ["therefore", "windows", "desktop", "csharp", "dotnet", "administration"],
   },
   {
