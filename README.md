@@ -151,6 +151,10 @@ fallback completely, remove it from `repositoryProjects`. Project entries can
 optionally specify an `icon` URL. The launcher links to its public source repository
 and the latest Windows x64 and ARM64 single-file EXEs on GitHub Releases.
 
+Therefore Dialog Patcher uses the same repository-managed list, linking to its
+public GitHub source and latest standalone Windows x64 GUI download. The GUI
+requests administrator access and supports compatible x86 and x64 client DLLs.
+
 ### Add a Project
 
 ```ts

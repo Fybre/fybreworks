@@ -33,6 +33,18 @@ export const repositoryProjects: Project[] = [
       "A Windows desktop launcher for administrators working across multiple Therefore Online tenants. Save connection profiles, capture existing username/password or Entra ID settings, reorder tenants, and open Navigator, Designer and Console using the same connection. Available as a self-contained single-file app for Windows x64 and ARM64. Requires the Therefore client to be installed.",
     tags: ["therefore", "windows", "desktop", "csharp", "dotnet", "administration"],
   },
+  {
+    slug: "therefore-dialog-patcher",
+    name: "Therefore Dialog Patcher",
+    icon: "/projects/therefore-dialog-patcher.svg",
+    links: [
+      { name: "GitHub", url: "https://github.com/Fybre/therefore-dialog-patcher" },
+      { name: "Windows x64", url: "https://github.com/Fybre/therefore-dialog-patcher/releases/latest/download/ThereforeDialogPatcherGUI.exe" },
+    ],
+    description:
+      "A standalone Windows utility that suppresses the license-change notification shown after switching Therefore tenants. Scan for a compatible dialog call, patch with a backup, save a patched copy, or restore the original. Supports x86 and x64 client DLLs, requires administrator access, and runs without installing Python. Verified with Therefore v34 x86 and v36 x64; other versions require a compatible match.",
+    tags: ["therefore", "windows", "desktop", "python", "administration"],
+  },
 ];
 
 export const projects: Project[] = [
